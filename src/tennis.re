@@ -44,7 +44,7 @@ let incrementPoint: point => option(point) =
     | Thirty => None
     };
 
-let scoreWhenForty = (current: fortyData, winner) =>
+let scoreWhenForty = (current, winner) =>
   current.player == winner ?
     Game(winner) :
     (
@@ -94,6 +94,42 @@ let string_of_point = point =>
   | Love => "0"
   | Fifteen => "15"
   | Thirty => "30"
+  };
+
+let string_of_score = score =>
+  switch (score) {
+  | Points(p) =>
+    string_of_player(PlayerOne)
+    ++ string_of_point(p.playerOne)
+    ++ " - "
+    ++ string_of_player(PlayerTwo)
+    ++ string_of_point(p.playerTwo)
+  | Forty(f) =>
+    switch (f.player) {
+    | PlayerOne =>
+      string_of_player(f.player)
+      ++ "40"
+      ++ " - "
+      ++ string_of_player(PlayerTwo)
+      ++ string_of_point(f.otherPlayerPoint)
+    | PlayerTwo =>
+      string_of_player(PlayerOne)
+      ++ string_of_point(f.otherPlayerPoint)
+      ++ " - "
+      ++ string_of_player(f.player)
+      ++ "40"
+    }
+  | Deuce => string_of_player(PlayerOne) ++ "40" ++ " - " ++ string_of_player(PlayerTwo) ++ "40"
+  | Advantage(a) =>
+    switch (a) {
+    | PlayerOne => string_of_player(PlayerOne) ++ "AD" ++ " - " ++ string_of_player(PlayerTwo) ++ "40"
+    | PlayerTwo => string_of_player(PlayerOne) ++ "40" ++ " - " ++ string_of_player(PlayerTwo) ++ "AD"
+    }
+  | Game(g) =>
+    switch (g) {
+    | PlayerOne => string_of_player(PlayerOne) ++ "WIN"
+    | PlayerTwo => string_of_player(PlayerTwo) ++ "WIN"
+    }
   };
 
 let newGame = Points({playerOne: Love, playerTwo: Love});

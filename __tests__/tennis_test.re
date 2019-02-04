@@ -57,9 +57,14 @@ describe("Test tennis transitions", () => {
 });
 
 describe("Test string_of_X", () => {
-  test("Given PlayerOne then player 1", () => {
+  test("Given PlayerOne then Player 1:", () => {
     let player = PlayerOne;
     expect(string_of_player(player)) |> toEqual("Player 1:");
+  });
+
+  test("Given PlayerTwo then Player 2:", () => {
+    let player = PlayerTwo;
+    expect(string_of_player(player)) |> toEqual("Player 2:");
   });
 
   test("Given Love then 0", () => {
@@ -75,5 +80,40 @@ describe("Test string_of_X", () => {
   test("Given Thirty then 30", () => {
     let thty = Thirty;
     expect(string_of_point(thty)) |> toEqual("30");
+  });
+
+  test("Given 30 - 15, then Player 1:30 - Player 2:15", () => {
+    let score = Points({playerOne: Thirty, playerTwo: Fifteen});
+    expect(string_of_score(score)) |> toEqual("Player 1:30 - Player 2:15");
+  });
+
+  test("Given 40 - 15, then Player 1:40 - Player 2:15", () => {
+    let fortyFifteen = Forty({player: PlayerOne, otherPlayerPoint: Fifteen});
+    expect(string_of_score(fortyFifteen)) |> toEqual("Player 1:40 - Player 2:15");
+  });
+
+  test("Given 15 - 40, then Player 1:15 - Player 2:40", () => {
+    let fifteenForty = Forty({player: PlayerTwo, otherPlayerPoint: Fifteen});
+    expect(string_of_score(fifteenForty)) |> toEqual("Player 1:15 - Player 2:40");
+  });
+
+  test("Given Deuce, then Player 1:40 - Player 2:40", () => {
+    let deuce = Deuce;
+    expect(string_of_score(deuce)) |> toEqual("Player 1:40 - Player 2:40");
+  });
+
+  test("Given AD - 40, then Player 1:AD - Player 2:40", () => {
+    let adv = Advantage(PlayerOne);
+    expect(string_of_score(adv)) |> toEqual("Player 1:AD - Player 2:40");
+  });
+
+  test("Given 40 - AD, then Player 1:40 - Player 2:AD", () => {
+    let adv = Advantage(PlayerTwo);
+    expect(string_of_score(adv)) |> toEqual("Player 1:40 - Player 2:AD");
+  });
+
+  test("Given Game to PlayerOne", () => {
+    let g1 = Game(PlayerOne);
+    expect(string_of_score(g1)) |> toEqual("Player 1:WIN");
   });
 });
